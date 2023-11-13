@@ -41,37 +41,53 @@ public class bookHandler implements HttpHandler {
             }
         }
         else if(method.equals("POST")){
-            var headers = exchange.getRequestHeaders() ;
-            Long id = parseLong(headers.get("id").get(0));
-            String  name = headers.get("name").get(0) ,
-                    author = headers.get("author").get(0) ,
-                    genre = headers.get("genre").get(0) ;
-
-           response.append(bookService.saveBook(new Book(id , name , author , genre)))   ;
-        }
-        else if(method.equals("DELETE")){
             URI uri = exchange.getRequestURI();
-            String query = uri.getRawQuery(); // uri er question er por ja ce
-
-            if(query == null){
-               response.append("Please add book id you want to delete");
-               ;// bookService.getBooks() ;
+            if(!uri.toString().equals("/BookStore/addBook") ){
+                response.append("URL is not correct") ;
             }
             else{
+                var headers = exchange.getRequestHeaders() ;
+                Long id = parseLong(headers.get("id").get(0));
+                String  name = headers.get("name").get(0) ,
+                        author = headers.get("author").get(0) ,
+                        genre = headers.get("genre").get(0) ;
+
+                response.append(bookService.saveBook(new Book(id , name , author , genre)))   ;
+            }
+        }
+        else if(method.equals("DELETE")){
+
+            URI uri = exchange.getRequestURI();
+            if(!uri.toString().startsWith("/BookStore/deleteBook?") ){
+                response.append("URL is not correct") ;
+            }
+            else if(uri.getRawQuery().length() == 0)response.append("URL is not correct.Please add book id you want to delete") ;
+            else {
+                String query = uri.getRawQuery();
                 Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
-                bookService.deleteBook(bookId); ;
+                bookService.deleteBook(bookId);
             }
         }
         else if(method.equals("PUT")){
-            var headers = exchange.getRequestHeaders() ;
-            Long id = parseLong(headers.get("id").get(0));
-            Long newId = parseLong(headers.get("newId").get(0));
-            String  name = headers.get("name").get(0) ,
-                    author = headers.get("author").get(0) ,
-                    genre = headers.get("genre").get(0) ;
 
-            bookService.deleteBook(id);
-            response.append(bookService.saveBook(new Book( newId, name , author , genre)))   ;
+            URI uri = exchange.getRequestURI();
+            if(!uri.toString().startsWith("/BookStore/updateBook?") ){
+                response.append("URL is not correct") ;
+            }
+            else if(uri.getRawQuery().length() == 0)response.append("URL is not correct") ;
+            else{
+                String query = uri.getRawQuery(); // uri er question er por ja ce
+                Long oldId = parseLong(query) ;
+
+                var headers = exchange.getRequestHeaders() ;
+                Long id = parseLong(headers.get("id").get(0));
+                String  name = headers.get("name").get(0) ,
+                        author = headers.get("author").get(0) ,
+                        genre = headers.get("genre").get(0) ;
+
+                bookService.deleteBook(oldId);
+                response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
+            }
         }
 
         exchange.sendResponseHeaders(200, response.length());
