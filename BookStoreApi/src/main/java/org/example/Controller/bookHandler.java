@@ -11,14 +11,23 @@ import java.io.OutputStream;
 import java.net.URI;
 
 import static java.lang.Long.parseLong;
+import static org.example.Controller.loginHandler.isAuthenticated;
 
 public class bookHandler implements HttpHandler {
     BookService bookService = new BookService() ;
     Book book = new Book() ;
+
+
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
+        if(!isAuthenticated(exchange)){
+            System.out.println("Need auth");
+            return;
+        }
+
         StringBuffer response = new StringBuffer();
-        response.append("Request Received");
         String method = exchange.getRequestMethod();
 
         if(method.equals("GET")){
