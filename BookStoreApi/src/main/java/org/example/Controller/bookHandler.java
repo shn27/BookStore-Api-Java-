@@ -17,8 +17,6 @@ public class bookHandler implements HttpHandler {
     BookService bookService = new BookService() ;
     Book book = new Book() ;
 
-
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
@@ -56,6 +54,7 @@ public class bookHandler implements HttpHandler {
             String query = uri.getRawQuery(); // uri er question er por ja ce
 
             if(query == null){
+               response.append("Please add book id you want to delete");
                ;// bookService.getBooks() ;
             }
             else{

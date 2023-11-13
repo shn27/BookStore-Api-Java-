@@ -1,16 +1,15 @@
 package org.example.repositories;
 
+import org.example.Interface.repository;
 import org.example.Model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BookRepository {
+public class BookRepository implements repository {
     static List<Book> books = new ArrayList<>() ;
     public BookRepository( ) {
-//        Book book = new Book(1L, "A" , "B" , "C") ;
-//        books.add(book) ;
     }
 
     public List<Book> getBooks() {

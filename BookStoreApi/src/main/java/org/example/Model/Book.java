@@ -47,6 +47,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "\n"+ this.id + "\n" + this.name + "\n" + this.author + "\n" + this.genre ;
+        return "\nBook ID  \""+ this.id+ "\"" + "\nBook Name   \"" + this.name + "\"\nAuthor Name  \"" + this.author + "\"\nGenre  \"" + this.genre + "\"" ;
     }
 }
