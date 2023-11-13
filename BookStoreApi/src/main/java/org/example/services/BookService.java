@@ -1,11 +1,12 @@
 package org.example.services;
 
+import org.example.Interface.service;
 import org.example.Model.Book;
 import org.example.repositories.BookRepository;
 
 import java.util.List;
 
-public class BookService {
+public class BookService implements service {
     BookRepository books = new BookRepository();
 
     public BookService() {
