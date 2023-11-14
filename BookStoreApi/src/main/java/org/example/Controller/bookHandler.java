@@ -21,7 +21,7 @@ public class bookHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         if(!isAuthenticated(exchange)){
-            System.out.println("Need auth");
+            //System.out.println("Need auth");
             return;
         }
 
@@ -37,7 +37,8 @@ public class bookHandler implements HttpHandler {
             }
             else{
                 Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
-                response.append(bookService.getBook(bookId).toString())  ;
+               if(bookService.isPresent(bookId)) response.append(bookService.getBook(bookId).toString())  ;
+               else response.append("Sorry Book is not present");
             }
         }
         else if(method.equals("POST")){
