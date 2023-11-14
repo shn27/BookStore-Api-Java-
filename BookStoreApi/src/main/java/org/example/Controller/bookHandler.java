@@ -47,12 +47,18 @@ public class bookHandler implements HttpHandler {
             }
             else{
                 var headers = exchange.getRequestHeaders() ;
-                Long id = parseLong(headers.get("id").get(0));
-                String  name = headers.get("name").get(0) ,
-                        author = headers.get("author").get(0) ,
-                        genre = headers.get("genre").get(0) ;
 
-                response.append(bookService.saveBook(new Book(id , name , author , genre)))   ;
+                if( ! (headers.containsKey("id") && headers.containsKey("name") && headers.containsKey("author") && headers.containsKey("genre") ) ){
+                    response.append("Headers Missing") ;
+                }
+                else{
+                    Long id = parseLong(headers.get("id").get(0));
+                    String  name = headers.get("name").get(0) ,
+                            author = headers.get("author").get(0) ,
+                            genre = headers.get("genre").get(0) ;
+
+                    response.append(bookService.saveBook(new Book(id , name , author , genre)))   ;
+                }
             }
         }
         else if(method.equals("DELETE")){
@@ -65,7 +71,12 @@ public class bookHandler implements HttpHandler {
             else {
                 String query = uri.getRawQuery();
                 Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
-                bookService.deleteBook(bookId);
+
+                if(bookService.isPresent(bookId)){
+                    bookService.deleteBook(bookId);
+                    response.append("Book Deleted successfully") ;
+                }
+                else response.append("Book id is not present") ;
             }
         }
         else if(method.equals("PUT")){
@@ -78,15 +89,24 @@ public class bookHandler implements HttpHandler {
             else{
                 String query = uri.getRawQuery(); // uri er question er por ja ce
                 Long oldId = parseLong(query) ;
-
                 var headers = exchange.getRequestHeaders() ;
-                Long id = parseLong(headers.get("id").get(0));
-                String  name = headers.get("name").get(0) ,
-                        author = headers.get("author").get(0) ,
-                        genre = headers.get("genre").get(0) ;
 
-                bookService.deleteBook(oldId);
-                response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
+                if( ! (headers.containsKey("id") && headers.containsKey("name") && headers.containsKey("author") && headers.containsKey("genre") ) ){
+                    response.append("Headers Missing") ;
+                }
+                else{
+                    Long id = parseLong(headers.get("id").get(0));
+                    String  name = headers.get("name").get(0) ,
+                            author = headers.get("author").get(0) ,
+                            genre = headers.get("genre").get(0) ;
+
+                    if(bookService.isPresent(oldId)){
+                        bookService.deleteBook(oldId);
+                        response.append("Book Updated\n") ;
+                        response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
+                    }
+                    else response.append("Book id is not present") ;
+                }
             }
         }
 

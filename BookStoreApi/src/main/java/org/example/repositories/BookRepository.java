@@ -38,4 +38,13 @@ public class BookRepository implements repository {
         }
         return null ;
     }
+    @Override
+    public boolean isPresent(Long id) {
+        for(Book book : books){
+            if(Objects.equals(book.getId(), id)){
+                return true ;
+            }
+        }
+        return false;
+    }
 }
