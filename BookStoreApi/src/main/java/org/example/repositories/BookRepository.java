@@ -3,48 +3,54 @@ package org.example.repositories;
 import org.example.Interface.repository;
 import org.example.Model.Book;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class BookRepository implements repository {
     static List<Book> books = new ArrayList<>() ;
+    static Set<Long> availableId = new HashSet<Long>() ;
+
+    static{
+        Long id = 1L ;
+        while(id <= 10000L){
+            availableId.add(id) ;id++ ;
+        }
+    }
+
+    static HashMap<Long , Book> books1 = new HashMap<Long , Book>() ;
     public BookRepository( ) {
     }
 
-    public List<Book> getBooks() {
-        return books;
+    @Override
+    public HashMap<Long , Book>  getBooks() {
+        return books1;
     }
+    @Override
     public Book save(Book book) {
-        books.add(book) ;
+        books1.put(book.getId() , book) ;
+        availableId.remove(book.getId()) ;
         return book ;
     }
 
+    @Override
     public void deleteById(Long id) {
-        int x = 0 ;
-        for(Book book : books){
-            if(Objects.equals(book.getId(), id)){
-                books.remove(x) ;
-                break;
-            }
-            x++ ;
-        }
+        books1.remove(id) ;
+        availableId.add(id) ;
     }
+
+    @Override
     public Book findById(Long id) {
-        for(Book book : books){
-            if(Objects.equals(book.getId(), id)){
-                return book ;
-            }
-        }
-        return null ;
+       return books1.get(id) ;
     }
     @Override
     public boolean isPresent(Long id) {
-        for(Book book : books){
-            if(Objects.equals(book.getId(), id)){
-                return true ;
-            }
-        }
-        return false;
+        if(books1.containsKey(id))return true ;
+        return false ;
+    }
+
+    @Override
+    public Long getAvailableId( ) {
+        Iterator<Long> iterator = availableId.iterator();
+        if(iterator.hasNext()) return (Long) iterator.next();
+        return null;
     }
 }

@@ -22,4 +22,14 @@ Almost done.
 If want to addBook but does not give all the headers  -- solved
 If want to updateBook but does not give everything    -- solved
 If want to get or delete or update a book but not found -- solved
+
+objectMapper in java
+Read value using json -- solved
+parse query to long -- solved
+Find value in order 1 -- solved
+sendResponseHeaders --solved
+
+Give response in login into cookies
+Auth
+Json
  */
