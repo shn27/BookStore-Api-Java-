@@ -73,6 +73,6 @@ curl --location --request DELETE 'http://localhost:8000/BookStore/deleteBook?2=n
 -----------------------------------------------------------------
 https://github.com/abrarrhine/AbrarBookstoreTransact </br>
 https://github.com/justinmtech/Bookstore-API </br>
-https://github.com/samiulsami/apitest
-https://howtodoinjava.com/jersey/jersey-rest-security/
+https://github.com/samiulsami/apitest </br>
+https://howtodoinjava.com/jersey/jersey-rest-security/ </br>
 
