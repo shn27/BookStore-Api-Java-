@@ -31,4 +31,9 @@ public class BookService implements service {
         books.save(book);
         return new StringBuffer(book.toString()) ;
     }
+
+    @Override
+    public boolean isPresent(Long id) {
+        return books.isPresent(id);
+    }
 }

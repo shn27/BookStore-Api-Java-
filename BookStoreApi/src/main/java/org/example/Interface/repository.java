@@ -9,4 +9,5 @@ public interface repository {
     public Book save(Book book) ;
     public void deleteById(Long id) ;
     public Book findById(Long id) ;
+    public boolean isPresent(Long id) ;
 }

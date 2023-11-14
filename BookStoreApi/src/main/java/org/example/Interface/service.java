@@ -9,4 +9,5 @@ public interface service {
     public StringBuffer getBook(Long id) ;
     public void deleteBook(Long id) ;
     public StringBuffer saveBook(Book book) ;
+    public boolean isPresent(Long id) ;
 }

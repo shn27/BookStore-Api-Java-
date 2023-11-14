@@ -71,7 +71,12 @@ public class bookHandler implements HttpHandler {
             else {
                 String query = uri.getRawQuery();
                 Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
-                bookService.deleteBook(bookId);
+
+                if(bookService.isPresent(bookId)){
+                    bookService.deleteBook(bookId);
+                    response.append("Book Deleted successfully") ;
+                }
+                else response.append("Book id is not present") ;
             }
         }
         else if(method.equals("PUT")){
@@ -95,8 +100,12 @@ public class bookHandler implements HttpHandler {
                             author = headers.get("author").get(0) ,
                             genre = headers.get("genre").get(0) ;
 
-                    bookService.deleteBook(oldId);
-                    response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
+                    if(bookService.isPresent(oldId)){
+                        bookService.deleteBook(oldId);
+                        response.append("Book Updated\n") ;
+                        response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
+                    }
+                    else response.append("Book id is not present") ;
                 }
             }
         }
