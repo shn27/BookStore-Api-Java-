@@ -69,5 +69,10 @@ curl --location --request PUT 'http://localhost:8000/BookStore/updateBook?2=null
 curl --location --request DELETE 'http://localhost:8000/BookStore/deleteBook?2=null' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE'
 ```
-
+**References**
+-----------------------------------------------------------------
+https://github.com/abrarrhine/AbrarBookstoreTransact </br>
+https://github.com/justinmtech/Bookstore-API </br>
+https://github.com/samiulsami/apitest
+https://howtodoinjava.com/jersey/jersey-rest-security/
 
