@@ -5,9 +5,9 @@ import com.sun.net.httpserver.HttpHandler;
 import org.example.Model.Book;
 import org.example.repositories.BookRepository;
 import org.example.services.BookService;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 
 import static java.lang.Long.parseLong;
@@ -27,6 +27,7 @@ public class bookHandler implements HttpHandler {
 
         StringBuffer response = new StringBuffer();
         String method = exchange.getRequestMethod();
+        Integer responseHeader = 200 ;
 
         if(method.equals("GET")){
             URI uri = exchange.getRequestURI();
@@ -36,27 +37,30 @@ public class bookHandler implements HttpHandler {
               response.append(bookService.getBooks()) ;
             }
             else{
-                Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
+                Long bookId = parseLong(query) ;
                if(bookService.isPresent(bookId)) response.append(bookService.getBook(bookId).toString())  ;
-               else response.append("Sorry Book is not present");
+               else {
+                   response.append("Sorry Book is not present");
+                   responseHeader = 204 ;//No content
+               }
             }
         }
         else if(method.equals("POST")){
             URI uri = exchange.getRequestURI();
-            if(!uri.toString().equals("/BookStore/addBook") ){
-                response.append("URL is not correct") ;
+            if(!uri.toString().equals("/bookStore/addBook") ){
+                response.append("URL is not correct") ; responseHeader = 400 ;//Bad Request
             }
             else{
-                var headers = exchange.getRequestHeaders() ;
-
-                if( ! (headers.containsKey("id") && headers.containsKey("name") && headers.containsKey("author") && headers.containsKey("genre") ) ){
-                    response.append("Headers Missing") ;
+                JSONObject jsonObject = giveJsonObject(exchange) ;
+// json todo
+                if( ! (jsonObject.has("id") && jsonObject.has("name") && jsonObject.has("author") && jsonObject.has("genre") ) ){
+                    response.append("key Missing") ;responseHeader = 400 ;//Bad Request
                 }
                 else{
-                    Long id = parseLong(headers.get("id").get(0));
-                    String  name = headers.get("name").get(0) ,
-                            author = headers.get("author").get(0) ,
-                            genre = headers.get("genre").get(0) ;
+                    Long id =   jsonObject.getLong("id") ;
+                    String  name = jsonObject.getString("name") ,
+                            author = jsonObject.getString("author") ,
+                            genre = jsonObject.getString("genre");
 
                     response.append(bookService.saveBook(new Book(id , name , author , genre)))   ;
                 }
@@ -65,55 +69,81 @@ public class bookHandler implements HttpHandler {
         else if(method.equals("DELETE")){
 
             URI uri = exchange.getRequestURI();
-            if(!uri.toString().startsWith("/BookStore/deleteBook?") ){
-                response.append("URL is not correct") ;
+            if(!uri.toString().startsWith("/bookStore/deleteBook?") ){
+                response.append("URL is not correct") ;responseHeader = 400 ;//Bad Request
             }
-            else if(uri.getRawQuery().length() == 0)response.append("URL is not correct.Please add book id you want to delete") ;
+            else if(uri.getRawQuery().length() == 0){
+                response.append("URL is not correct.Please add book id you want to delete") ;responseHeader = 400 ;//Bad Request
+            }
             else {
                 String query = uri.getRawQuery();
-                Long bookId = parseLong(query.substring(query.indexOf("=")+1)) ;
+                Long bookId = parseLong(query) ;
+
+
 
                 if(bookService.isPresent(bookId)){
                     bookService.deleteBook(bookId);
                     response.append("Book Deleted successfully") ;
                 }
-                else response.append("Book id is not present") ;
+                else {
+                    response.append("Book id is not present") ;responseHeader = 404 ;//Not Found
+                }
             }
         }
         else if(method.equals("PUT")){
 
             URI uri = exchange.getRequestURI();
-            if(!uri.toString().startsWith("/BookStore/updateBook?") ){
-                response.append("URL is not correct") ;
+            if(!uri.toString().startsWith("/bookStore/updateBook?") ){
+                response.append("URL is not correct") ;responseHeader = 400 ;//Bad Request
             }
-            else if(uri.getRawQuery().length() == 0)response.append("URL is not correct") ;
+            else if(uri.getRawQuery().length() == 0){
+                response.append("URL is not correct") ;responseHeader = 400 ;//Bad Request
+            }
             else{
                 String query = uri.getRawQuery(); // uri er question er por ja ce
                 Long oldId = parseLong(query) ;
-                var headers = exchange.getRequestHeaders() ;
 
-                if( ! (headers.containsKey("id") && headers.containsKey("name") && headers.containsKey("author") && headers.containsKey("genre") ) ){
-                    response.append("Headers Missing") ;
+                JSONObject jsonObject = giveJsonObject(exchange) ;
+// json todo
+                if( ! (jsonObject.has("id") && jsonObject.has("name") && jsonObject.has("author") && jsonObject.has("genre") ) ){
+                    response.append("key Missing") ;responseHeader = 400 ;//Bad Request
                 }
                 else{
-                    Long id = parseLong(headers.get("id").get(0));
-                    String  name = headers.get("name").get(0) ,
-                            author = headers.get("author").get(0) ,
-                            genre = headers.get("genre").get(0) ;
+                    Long id =   jsonObject.getLong("id") ;
+                    String  name = jsonObject.getString("name") ,
+                            author = jsonObject.getString("author") ,
+                            genre = jsonObject.getString("genre");
 
                     if(bookService.isPresent(oldId)){
                         bookService.deleteBook(oldId);
                         response.append("Book Updated\n") ;
                         response.append(bookService.saveBook(new Book( id, name , author , genre)))   ;
                     }
-                    else response.append("Book id is not present") ;
+                    else {
+                        response.append("Book id is not present") ;responseHeader = 404 ;//Not Found
+                    }
                 }
             }
         }
 
-        exchange.sendResponseHeaders(200, response.length());
+        //todo
+        exchange.sendResponseHeaders(responseHeader, response.length());
         OutputStream os = exchange.getResponseBody();
         os.write(response.toString().getBytes());
         os.close();
+    }
+
+    private JSONObject giveJsonObject(HttpExchange exchange) throws IOException {
+        BufferedReader httpInput = new BufferedReader(new InputStreamReader(
+                exchange.getRequestBody(), "UTF-8"));
+        StringBuilder in = new StringBuilder();
+        String input;
+        while ((input = httpInput.readLine()) != null) {
+            in.append(input).append(" ");
+        }
+        httpInput.close();
+        String jsonString = String.valueOf(in.toString());
+        JSONObject jsonObject = new JSONObject(jsonString) ;
+        return jsonObject ;
     }
 }

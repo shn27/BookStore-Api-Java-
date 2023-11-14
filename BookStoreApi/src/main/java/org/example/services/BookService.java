@@ -1,20 +1,20 @@
 package org.example.services;
 
-import org.example.Interface.service;
 import org.example.Model.Book;
 import org.example.repositories.BookRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class BookService implements service {
+public class BookService   {
     BookRepository books = new BookRepository();
 
     public BookService() {
     }
     public StringBuffer getBooks() {
-        List<Book> bookList = books.getBooks();
+        HashMap<Long , Book> bookList = books.getBooks();
         StringBuffer stringBuffer = new StringBuffer() ;
-        for(Book book: bookList){
+        for(Book book: bookList.values()){//todo
             stringBuffer.append(book.toString()) ;
         }
         return stringBuffer ;
@@ -28,11 +28,15 @@ public class BookService implements service {
         books.deleteById(id);
     }
     public StringBuffer saveBook(Book book) {
+        if(books.isPresent(book.getId())){
+            StringBuffer s = new StringBuffer() ;
+            s.append("This Id is not available. You can use id ") ;
+            s.append(books.getAvailableId().toString()) ;
+            return  s ;
+        }
         books.save(book);
         return new StringBuffer(book.toString()) ;
     }
-
-    @Override
     public boolean isPresent(Long id) {
         return books.isPresent(id);
     }

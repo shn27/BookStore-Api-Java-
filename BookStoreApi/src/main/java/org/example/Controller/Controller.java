@@ -17,10 +17,9 @@ public class Controller {
     }
     public void controll() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress( 8000), 0);
-        server.createContext("/BookStore", new bookHandler());
-        HttpContext _login = server.createContext("/BookStore/login", new loginHandler());
-
-        _login.setAuthenticator(new BasicAuthenticator("myrealm") {
+        server.createContext("/bookStore", new bookHandler()); //todo
+        HttpContext _login = server.createContext("/bookStore/login", new loginHandler());
+        _login.setAuthenticator(new BasicAuthenticator("realm") {
             @Override
             public boolean checkCredentials(String user, String pwd) {
                 return user.equals(my_username) && pwd.equals(my_password);

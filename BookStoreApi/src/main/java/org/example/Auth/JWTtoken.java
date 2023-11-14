@@ -17,7 +17,7 @@ import java.time.ZoneOffset;
 import java.util.Base64;
 
 public class JWTtoken {
-    private static final String SECRET_KEY = "calicoBilai";
+    private static final String SECRET_KEY = "abcdef";
     private static final String JWT_HEADER = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
     private static final String encodedHeader = encode(JWT_HEADER.getBytes(StandardCharsets.UTF_8));
     private final String encodedPayload;
