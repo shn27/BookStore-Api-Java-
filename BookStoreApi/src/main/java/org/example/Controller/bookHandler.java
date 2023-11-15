@@ -21,7 +21,6 @@ public class bookHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         if(!isAuthenticated(exchange)){
-            //System.out.println("Need auth");
             return;
         }
 
