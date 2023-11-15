@@ -16,59 +16,73 @@ Use postman for testing.
 |method|url|body|action
 |-----|----|---|---|
 |GET| `http://localhost:8000/bookStore/login` | --header 'Authorization: Basic c2FtaToxMjM0' | returns a JWT token $TOKEN|
-|GET| `http://localhost:8000/bookStore` | --header 'Authorization: Bearer $TOKEN' | returns all the books.|
-|GET| `http://localhost:8000/bookStore?bookId` | --header 'Authorization: Bearer $TOKEN' | return a single book where Id = bookId.|
-|POST| `http://localhost:8000/bookStore/addBook` | --header 'Authorization: Bearer $TOKEN' | Add the book. Return the addded book.|
-|PUT| `http://localhost:8000/bookStore/updateBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Update the book the book if bookId is present. Return the updated book.|
-|DELETE| `http://localhost:8000/bookStore/deleteBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Delete the book the book if bookId is present. Return void.|
+|GET| `http://localhost:8000/bookStore` |   | returns all the books.|
+|GET| `http://localhost:8000/bookStore?bookId` |   | return a single book where Id = bookId.|
+|POST| `http://localhost:8000/bookStore/addBook` |   | Add the book. Return the addded book.|
+|PUT| `http://localhost:8000/bookStore/updateBook?bookId` |   | Update the book the book if bookId is present. Return the updated book.|
+|DELETE| `http://localhost:8000/bookStore/deleteBook?bookId` |   | Delete the book the book if bookId is present. Return void.|
 
 **cURL commands**
 -----------------------------------------------------------------
 **Login and receive a JWT $TOKEN (username: admin, password: 1234)**
 ```
 curl --location 'http://localhost:8000/bookStore/login' \
---header 'Authorization: Basic YWRtaW46MTIzNA=='
+--header 'Authorization: Basic YWRtaW46MTIzNA==' \
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MTcyMywidXNlcm5hbWUiOiJhZG1pbiJ9.GMfloFmkCpvi7zYoyzZkD0ycMQNrNEj7j6UQsBGL5O4"; myCookie="cookieValue"' \
+--data ''
 ```
 **Add book**
 ```
 curl --location 'http://localhost:8000/bookStore/addBook' \
---header 'id: 1' \
---header 'name: Tom Jones' \
---header 'author: Henry Fielding' \
---header 'genre: novel' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE' \
---data '
+--header 'Authorization: Basic YWRtaW46MTIzNA==' \
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MjcyNiwidXNlcm5hbWUiOiJhZG1pbiJ9.SQMrL0VArHh6OBrK0ufeXKSG8WwrJmSqvV_7s4-Ixnw"; myCookie="cookieValue"' \
+--data '{
+id: 1,
+name :"Tom Jones" ,
+author : "Henry Fielding" ,
+genre :"Novel"
+}
+
+'
 ```
 
 
 **Show all books**
+
 ```
-curl --location 'http://localhost:8000/bookStore/login' \
---header 'Authorization: Basic YWRtaW46MTIzNA=='
+curl --location 'http://localhost:8000/bookStore' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk3MzQxNywidXNlcm5hbWUiOiJhZG1pbiJ9.gaS2JWdnzKa3N-t37TT1a-hL_02JfNGmqBMjTbJIBHU' \
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MjcyNiwidXNlcm5hbWUiOiJhZG1pbiJ9.SQMrL0VArHh6OBrK0ufeXKSG8WwrJmSqvV_7s4-Ixnw"; myCookie="cookieValue"' \
+--data ''
 ```
 
 **Show book with given {id}**
+
 ```
 curl --location 'http://localhost:8000/bookStore?1=null' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE'
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MjcyNiwidXNlcm5hbWUiOiJhZG1pbiJ9.SQMrL0VArHh6OBrK0ufeXKSG8WwrJmSqvV_7s4-Ixnw"; myCookie="cookieValue"'
 ```
 
 **Update book with given {id}**
 ```
-curl --location --request PUT 'http://localhost:8000/bookStore/updateBook?2=null' \
---header 'id: 1' \
---header 'name: Tom Jones' \
---header 'author: Henry Fielding' \
---header 'genre: novel' \
+curl --location --request PUT 'http://localhost:8000/bookStore/updateBook?1=null' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE' \
---data '
+--header 'Authorization: Basic YWRtaW46MTIzNA==' \
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MjcyNiwidXNlcm5hbWUiOiJhZG1pbiJ9.SQMrL0VArHh6OBrK0ufeXKSG8WwrJmSqvV_7s4-Ixnw"; myCookie="cookieValue"' \
+--data '{
+id: 1,
+name :"Tom Jones 1" ,
+author : "Henry Fielding" ,
+genre :"Novel"
+}
+
+'
 ```
 **Delete book with given {id}**
 ```
 curl --location --request DELETE 'http://localhost:8000/bookStore/deleteBook?2=null' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE'
+--header 'Cookie: Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTcwMDA1MjcyNiwidXNlcm5hbWUiOiJhZG1pbiJ9.SQMrL0VArHh6OBrK0ufeXKSG8WwrJmSqvV_7s4-Ixnw"; myCookie="cookieValue"'
 ```
 **References**
 -----------------------------------------------------------------
