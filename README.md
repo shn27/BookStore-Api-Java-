@@ -15,12 +15,12 @@ Use postman for testing.
 -----------------------------------------------------------------
 |method|url|body|action
 |-----|----|---|---|
-|GET| `http://localhost:8000/BookStore/login` | --header 'Authorization: Basic c2FtaToxMjM0' | returns a JWT token $TOKEN|
-|GET| `http://localhost:8000/BookStore` | --header 'Authorization: Bearer $TOKEN' | returns all the books.|
-|GET| `http://localhost:8000/BookStore?bookId` | --header 'Authorization: Bearer $TOKEN' | return a single book where Id = bookId.|
-|POST| `http://localhost:8000/BookStore/addBook` | --header 'Authorization: Bearer $TOKEN' | Add the book. Return the addded book.|
-|PUT| `http://localhost:8000/BookStore/updateBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Update the book the book if bookId is present. Return the updated book.|
-|DELETE| `http://localhost:8000/BookStore/deleteBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Delete the book the book if bookId is present. Return void.|
+|GET| `http://localhost:8000/bookStore/login` | --header 'Authorization: Basic c2FtaToxMjM0' | returns a JWT token $TOKEN|
+|GET| `http://localhost:8000/bookStore` | --header 'Authorization: Bearer $TOKEN' | returns all the books.|
+|GET| `http://localhost:8000/bookStore?bookId` | --header 'Authorization: Bearer $TOKEN' | return a single book where Id = bookId.|
+|POST| `http://localhost:8000/bookStore/addBook` | --header 'Authorization: Bearer $TOKEN' | Add the book. Return the addded book.|
+|PUT| `http://localhost:8000/bookStore/updateBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Update the book the book if bookId is present. Return the updated book.|
+|DELETE| `http://localhost:8000/bookStore/deleteBook?bookId` | --header 'Authorization: Bearer $TOKEN' | Delete the book the book if bookId is present. Return void.|
 
 **cURL commands**
 -----------------------------------------------------------------
