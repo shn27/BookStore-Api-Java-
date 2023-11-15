@@ -28,8 +28,6 @@ Read value using json -- solved
 parse query to long -- solved
 Find value in order 1 -- solved
 sendResponseHeaders --solved
+Give response in login using cookies --solved
 
-Give response in login into cookies
-Auth
-Json
  */
