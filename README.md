@@ -26,12 +26,12 @@ Use postman for testing.
 -----------------------------------------------------------------
 **Login and receive a JWT $TOKEN (username: admin, password: 1234)**
 ```
-curl --location 'http://localhost:8000/BookStore/login' \
+curl --location 'http://localhost:8000/bookStore/login' \
 --header 'Authorization: Basic YWRtaW46MTIzNA=='
 ```
 **Add book**
 ```
-curl --location 'http://localhost:8000/BookStore/addBook' \
+curl --location 'http://localhost:8000/bookStore/addBook' \
 --header 'id: 1' \
 --header 'name: Tom Jones' \
 --header 'author: Henry Fielding' \
@@ -44,19 +44,19 @@ curl --location 'http://localhost:8000/BookStore/addBook' \
 
 **Show all books**
 ```
-curl --location 'http://localhost:8000/BookStore/login' \
+curl --location 'http://localhost:8000/bookStore/login' \
 --header 'Authorization: Basic YWRtaW46MTIzNA=='
 ```
 
 **Show book with given {id}**
 ```
-curl --location 'http://localhost:8000/BookStore?1=null' \
+curl --location 'http://localhost:8000/bookStore?1=null' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE'
 ```
 
 **Update book with given {id}**
 ```
-curl --location --request PUT 'http://localhost:8000/BookStore/updateBook?2=null' \
+curl --location --request PUT 'http://localhost:8000/bookStore/updateBook?2=null' \
 --header 'id: 1' \
 --header 'name: Tom Jones' \
 --header 'author: Henry Fielding' \
@@ -67,7 +67,7 @@ curl --location --request PUT 'http://localhost:8000/BookStore/updateBook?2=null
 ```
 **Delete book with given {id}**
 ```
-curl --location --request DELETE 'http://localhost:8000/BookStore/deleteBook?2=null' \
+curl --location --request DELETE 'http://localhost:8000/bookStore/deleteBook?2=null' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQiLCJleHBpcnlfdGltZSI6MTY5OTk1NDM1MywidXNlcm5hbWUiOiJhZG1pbiJ9.WK4GrfQIge-yRUJCBLkgHiwI-51dHVk8WA15r5CmldE'
 ```
 **References**
