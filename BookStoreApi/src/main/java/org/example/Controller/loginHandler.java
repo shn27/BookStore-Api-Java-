@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class loginHandler implements HttpHandler {
-    private static final int TokenLifeSpanMinutes = 10;
-
+    private static final int  TokenLifeSpanMinutes = 10;
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         //System.out.println( "c'mon " + exchange.getRequestHeaders().get("Authorization").getLast()); //Basic YWRtaW46MTIzNA==
@@ -85,6 +84,15 @@ public class loginHandler implements HttpHandler {
         return valid;
     }
 
+    public static void SetCookieNull( HttpExchange exchange) {
+        HttpCookie cookie = new HttpCookie("Token", "");
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+
+        // Add the cookie to the response headers
+        exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
+
     public void SetCookiesExample( HttpExchange exchange , String value ) {
         HttpCookie cookie = new HttpCookie("Token", value);
         cookie.setDomain("localhost");
@@ -108,7 +116,7 @@ public class loginHandler implements HttpHandler {
 
                 // Process each cookie
                 for (HttpCookie cookie : cookies) {
-                    token.append(cookie.getValue()) ;
+                     token.append(cookie.getValue()) ;
                 }
             }
         }
