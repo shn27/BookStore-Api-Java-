@@ -11,7 +11,7 @@ import java.io.*;
 import java.net.URI;
 
 import static java.lang.Long.parseLong;
-import static org.example.Controller.loginHandler.isAuthenticated;
+import static org.example.Controller.loginHandler.*;
 
 public class bookHandler implements HttpHandler {
     BookService bookService = new BookService() ;
@@ -46,7 +46,10 @@ public class bookHandler implements HttpHandler {
         }
         else if(method.equals("POST")){
             URI uri = exchange.getRequestURI();
-            if(!uri.toString().equals("/bookStore/addBook") ){
+            if(uri.toString().equals("/bookStore/logout") ){
+                SetCookieNull(exchange) ;
+            }
+            else if(!uri.toString().equals("/bookStore/addBook") ){
                 response.append("URL is not correct") ; responseHeader = 400 ;//Bad Request
             }
             else{
@@ -125,7 +128,7 @@ public class bookHandler implements HttpHandler {
             }
         }
 
-        //todo
+        //todo done
         exchange.sendResponseHeaders(responseHeader, response.length());
         OutputStream os = exchange.getResponseBody();
         os.write(response.toString().getBytes());
