@@ -90,7 +90,7 @@ https://github.com/abrarrhine/AbrarBookstoreTransact </br>
 https://github.com/justinmtech/Bookstore-API </br>
 https://github.com/samiulsami/apitest </br>
 https://howtodoinjava.com/jersey/jersey-rest-security/ </br>
-
+https://stackoverflow.com/questions/2022032/building-a-runnable-jar-with-maven-2 </br>
 **Download and run Docker Image**
 -----------------------------------------------------------------
 ```docker pull shn27/bookstore-api:1.2``` </br>
