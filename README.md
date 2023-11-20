@@ -93,8 +93,8 @@ https://howtodoinjava.com/jersey/jersey-rest-security/ </br>
 
 **Download and run Docker Image**
 -----------------------------------------------------------------
-`docker pull shn27/bookstore-api:1.2`
-`docker run -p 8000:8000 shn27/bookstore-api:1.2`
+```docker pull shn27/bookstore-api:1.2```
+```docker run -p 8000:8000 shn27/bookstore-api:1.2```
 
 
 
