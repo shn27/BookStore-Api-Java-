@@ -19,8 +19,8 @@ Use postman for testing.
 |GET| `http://localhost:8000/bookStore` |   | returns all the books.|
 |GET| `http://localhost:8000/bookStore?bookId` |   | return a single book where Id = bookId.|
 |POST| `http://localhost:8000/bookStore/addBook` |   | Add the book. Return the addded book.|
-|PUT| `http://localhost:8000/bookStore/updateBook?bookId` |   | Update the book the book if bookId is present. Return the updated book.|
-|DELETE| `http://localhost:8000/bookStore/deleteBook?bookId` |   | Delete the book the book if bookId is present. Return void.|
+|PUT| `http://localhost:8000/bookStore/updateBook?bookId` |   | Update the book if bookId is present. Return the updated book.|
+|DELETE| `http://localhost:8000/bookStore/deleteBook?bookId` |   | Delete the book if bookId is present. Return void.|
 
 **cURL commands**
 -----------------------------------------------------------------
